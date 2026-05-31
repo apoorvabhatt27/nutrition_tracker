@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#2E7D32">
+  <title>Nutrition Tracker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     AUTH SCREEN
+══════════════════════════════════════════════════════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🥗</div>
+      <span class="auth-logo-text">Nutrition Tracker</span>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-form">
+      <h2>Welcome back</h2>
+      <button type="button" class="btn-full btn-google">
+        <svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><span>or</span></div>
+      <form>
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" name="email" id="login-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" name="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-full btn-primary-solid">Sign In</button>
+      </form>
+      <div class="auth-toggle">
+        Don't have an account? <button id="btn-show-signup">Sign Up</button>
+      </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signup-form" class="hidden">
+      <h2>Create account</h2>
+      <button type="button" class="btn-full btn-google">
+        <svg width="18" height="18" viewBox="0 0 48 48" style="flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><span>or</span></div>
+      <form>
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" name="email" id="signup-email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" name="password" id="signup-password" placeholder="Min 6 characters" required autocomplete="new-password" minlength="6">
+        </div>
+        <button type="submit" class="btn-full btn-primary-solid">Sign Up with Email</button>
+      </form>
+      <div class="auth-toggle">
+        Already have an account? <button id="btn-show-login">Sign In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════════════════════════════ -->
+<div id="app" class="hidden">
+
+  <!-- Header -->
+  <header id="app-header">
+    <div class="header-logo">
+      <span class="header-logo-icon">🥗</span>
+      Nutrition Tracker
+    </div>
+    <div class="header-actions">
+      <button id="btn-logout" class="btn-icon-sm" title="Sign out">↩</button>
+    </div>
+  </header>
+
+  <!-- Tab Content -->
+  <main id="app-main">
+
+    <!-- ── TAB 1: Meal Log ─────────────────────────────────── -->
+    <div id="tab-meal-log" class="tab-content">
+      <div class="log-top-bar">
+        <h2>Today's Log</h2>
+      </div>
+
+      <!-- Add Meal Controls -->
+      <div class="log-controls">
+        <div class="meal-type-row">
+          <label for="log-meal-type">Meal Type</label>
+          <select id="log-meal-type">
+            <option value="breakfast">🌅 Breakfast</option>
+            <option value="lunch">☀️ Lunch</option>
+            <option value="dinner">🌙 Dinner</option>
+            <option value="snack">🍎 Snack</option>
+            <option value="extra">➕ Extra</option>
+          </select>
+        </div>
+
+        <div class="search-wrapper" id="log-search-wrapper">
+          <input type="text" id="log-search" placeholder="Search food to log…" autocomplete="off">
+          <div id="log-search-results" class="search-results hidden"></div>
+        </div>
+
+        <div id="log-add-section" class="hidden">
+          <div class="selected-food-row">
+            <div class="selected-food-name" id="log-selected-food"></div>
+            <button id="btn-clear-food" class="btn-clear-food" title="Clear selection">✕</button>
+          </div>
+          <div class="portion-row">
+            <input type="number" id="log-amount" placeholder="Amount" min="1" step="0.5">
+            <select id="log-unit">
+              <option value="g">g</option>
+              <option value="piece">piece</option>
+            </select>
+          </div>
+          <div id="log-portion-preview"></div>
+          <button id="btn-add-to-log" class="btn btn-primary" style="width:100%">Add to Log</button>
+        </div>
+      </div>
+
+      <!-- Summary Section 1: Macros -->
+      <div class="summary-card">
+        <h3>Today vs Target — Macros</h3>
+        <div id="log-summary-macros"></div>
+      </div>
+
+      <!-- Summary Section 2: Fat Breakdown -->
+      <div class="summary-card">
+        <h3>Fat Breakdown</h3>
+        <div id="log-summary-fats"></div>
+      </div>
+
+      <!-- Log Entries -->
+      <div id="log-entries"></div>
+    </div>
+
+    <!-- ── TAB 2: Meal Plan ────────────────────────────────── -->
+    <div id="tab-meal-plan" class="tab-content">
+      <div class="plan-header">
+        <h2>Meal Plan</h2>
+        <button id="btn-clear-plan" class="btn btn-secondary" style="font-size:0.82rem;padding:7px 12px;">Clear All</button>
+      </div>
+      <div id="meal-plan-content"></div>
+    </div>
+
+    <!-- ── TAB 3: Food Database ───────────────────────────── -->
+    <div id="tab-food-db" class="tab-content">
+      <div class="food-db-top">
+        <h2>Food Database</h2>
+        <div class="food-db-actions">
+          <button id="btn-sort-foods" class="btn btn-secondary" style="font-size:0.82rem;padding:7px 12px;">⇅ Sort</button>
+          <button id="btn-add-custom-food" class="btn btn-primary" style="font-size:0.82rem;padding:7px 12px;">+ Add Food</button>
+        </div>
+      </div>
+
+      <!-- Sort Panel -->
+      <div id="sort-panel" class="sort-panel hidden">
+        <button data-sort="name">Name</button>
+        <button data-sort="protein">Protein ↑↓</button>
+        <button data-sort="fat">Fat ↑↓</button>
+        <button data-sort="fiber">Fiber ↑↓</button>
+        <button data-sort="net_carbs">Net Carbs ↑↓</button>
+        <button data-sort="gl">GL ↑↓</button>
+        <button data-sort="calories">Calories ↑↓</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="food-db-filters">
+        <label for="food-tag-filter" style="font-size:0.82rem;color:var(--text-secondary)">Filter:</label>
+        <select id="food-tag-filter" style="width:auto;flex:0 0 auto;">
+          <option value="">All Tags</option>
+          <option value="R">R — Recommended</option>
+          <option value="MR">MR — Mod. Recommended</option>
+          <option value="OR">OR — Occasionally Recommended</option>
+          <option value="NR">NR — Not Recommended</option>
+        </select>
+        <input type="text" id="food-db-search" placeholder="Search…" style="flex:1;min-width:120px;" autocomplete="off">
+      </div>
+
+      <div id="food-db-list"></div>
+    </div>
+
+    <!-- ── TAB 4: Nutrition Tracking ─────────────────────── -->
+    <div id="tab-nutrition" class="tab-content">
+      <div class="nutr-top">
+        <h2>Nutrition Tracking</h2>
+      </div>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="nutr-date-row">
+          <label>From</label>
+          <input type="date" id="nutr-start">
+          <label>To</label>
+          <input type="date" id="nutr-end">
+          <button id="btn-nutr-load" class="btn btn-primary" style="padding:9px 14px;font-size:0.85rem;white-space:nowrap;">Load</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+          <button class="btn btn-secondary" style="font-size:0.78rem;padding:5px 10px;" onclick="TabNutrition._quickRange(7)">Last 7 days</button>
+          <button class="btn btn-secondary" style="font-size:0.78rem;padding:5px 10px;" onclick="TabNutrition._quickRange(14)">Last 14 days</button>
+          <button class="btn btn-secondary" style="font-size:0.78rem;padding:5px 10px;" onclick="TabNutrition._quickRange(30)">Last 30 days</button>
+        </div>
+      </div>
+
+      <div id="nutr-content"></div>
+    </div>
+
+    <!-- ── TAB 5: Personal Target ─────────────────────────── -->
+    <div id="tab-targets" class="tab-content">
+      <div class="targets-top">
+        <h2>Personal Targets</h2>
+      </div>
+
+      <!-- Current targets display -->
+      <div class="card" style="margin-bottom:16px">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--text-secondary);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em">Your Current Targets</div>
+        <div id="current-targets-display"><p class="text-muted">No targets set yet.</p></div>
+      </div>
+
+      <!-- Input form -->
+      <div class="target-form">
+        <h3>Set / Update Targets</h3>
+
+        <div class="input-pair">
+          <div class="fg">
+            <label for="target-age">Age (yrs)</label>
+            <input type="number" id="target-age" placeholder="e.g. 30" min="10" max="100">
+          </div>
+          <div class="fg">
+            <label for="target-sex">Sex</label>
+            <select id="target-sex">
+              <option value="">— select —</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-pair">
+          <div class="fg">
+            <label for="target-height">Height (cm)</label>
+            <input type="number" id="target-height" placeholder="e.g. 170" min="100" max="250">
+          </div>
+          <div class="fg">
+            <label for="target-weight">Current Weight (kg)</label>
+            <input type="number" id="target-weight" placeholder="e.g. 80" min="30" max="300">
+          </div>
+        </div>
+
+        <div class="input-pair">
+          <div class="fg">
+            <label for="target-weight-goal">Target Weight (kg)</label>
+            <input type="number" id="target-weight-goal" placeholder="e.g. 72" min="30" max="300">
+          </div>
+          <div class="fg">
+            <label for="target-duration">Duration (weeks)</label>
+            <input type="number" id="target-duration" placeholder="e.g. 12" min="1" max="104">
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:12px">
+          <label for="target-activity">Activity Level</label>
+          <select id="target-activity"></select>
+        </div>
+
+        <div class="check-row">
+          <input type="checkbox" id="target-vegetarian">
+          <label for="target-vegetarian">Vegetarian (adjusts protein target)</label>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="target-diabetes">
+          <label for="target-diabetes">Diabetes (caps GL target at 80)</label>
+        </div>
+        <div class="check-row">
+          <input type="checkbox" id="target-pcos">
+          <label for="target-pcos">PCOS (caps GL target at 80)</label>
+        </div>
+
+        <button id="btn-calculate-targets" class="btn btn-secondary" style="width:100%;margin-bottom:12px">Calculate Targets</button>
+      </div>
+
+      <!-- Calculated results (editable) -->
+      <div id="targets-result-section" class="target-form hidden">
+        <h3>Calculated Targets — edit if needed</h3>
+
+        <!-- Warnings from calculation engine -->
+        <div id="target-warnings" class="target-warnings hidden"></div>
+
+        <!-- Weekly rate summary -->
+        <div id="target-rate-info" class="target-rate-info"></div>
+
+        <div class="result-grid">
+          <div class="result-field">
+            <label>Calories (kcal)</label>
+            <input type="number" id="res-calories">
+          </div>
+          <div class="result-field">
+            <label>Protein (g)</label>
+            <input type="number" id="res-protein" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Fat (g)</label>
+            <input type="number" id="res-fat" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Net Carbs (g)</label>
+            <input type="number" id="res-net-carbs" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Fiber (g)</label>
+            <input type="number" id="res-fiber" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Daily GL Target</label>
+            <input type="number" id="res-gl-target">
+          </div>
+        </div>
+
+        <div style="font-size:0.82rem;font-weight:700;color:var(--text-secondary);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.04em">Fat Breakdown Targets</div>
+        <div class="result-grid">
+          <div class="result-field">
+            <label>MUFA (g)</label>
+            <input type="number" id="res-mufa" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>PUFA (g)</label>
+            <input type="number" id="res-pufa" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Omega-3 (g)</label>
+            <input type="number" id="res-omega3" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Omega-6 (g)</label>
+            <input type="number" id="res-omega6" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>SFA (g)</label>
+            <input type="number" id="res-sfa" step="0.1">
+          </div>
+          <div class="result-field">
+            <label>Max Trans Fat (g)</label>
+            <input type="number" id="res-trans" step="0.1">
+          </div>
+        </div>
+
+        <button id="btn-save-targets" class="btn btn-primary" style="width:100%">Save Targets</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-tab="meal-log">
+      <span class="nav-icon">🍽️</span>
+      Meal Log
+    </button>
+    <button class="nav-btn" data-tab="meal-plan">
+      <span class="nav-icon">📅</span>
+      Plan
+    </button>
+    <button class="nav-btn" data-tab="food-db">
+      <span class="nav-icon">🥗</span>
+      Foods
+    </button>
+    <button class="nav-btn" data-tab="nutrition">
+      <span class="nav-icon">📊</span>
+      Tracking
+    </button>
+    <button class="nav-btn" data-tab="targets">
+      <span class="nav-icon">🎯</span>
+      Target
+    </button>
+  </nav>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: Add Plan Item
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add-plan">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>Add to <span id="plan-add-meal-type-label">Meal</span></h3>
+      <button class="btn-close-modal" id="btn-close-plan-modal">×</button>
+    </div>
+    <input type="hidden" id="plan-food-id">
+    <div class="search-wrapper">
+      <input type="text" id="plan-search" placeholder="Search food…" autocomplete="off">
+      <div id="plan-search-results" class="search-results hidden"></div>
+    </div>
+    <div id="plan-add-section" class="hidden" style="margin-top:14px">
+      <div id="plan-selected-name" style="font-weight:600;margin-bottom:10px;"></div>
+      <div class="portion-row">
+        <input type="number" id="plan-amount" placeholder="Amount" min="1" step="0.5">
+        <select id="plan-unit">
+          <option value="g">g</option>
+          <option value="piece">piece</option>
+        </select>
+      </div>
+      <div id="plan-portion-preview"></div>
+      <button id="btn-add-plan-item" class="btn btn-primary" style="width:100%;margin-top:12px">Add to Plan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MODAL: Add Custom Food
+══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-add-food">
+  <div class="modal-sheet">
+    <div class="modal-header">
+      <h3>Add Custom Food</h3>
+      <button class="btn-close-modal" id="btn-close-add-food">×</button>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:14px">All values per 100g / 100ml.</p>
+    <form id="form-add-food">
+      <div class="form-group">
+        <label>Food Name *</label>
+        <input type="text" name="name" required placeholder="e.g. Dal Makhani">
+      </div>
+      <div class="input-pair">
+        <div class="fg">
+          <label>Tag *</label>
+          <select name="tag">
+            <option value="R">R — Recommended</option>
+            <option value="MR" selected>MR — Mod. Recommended</option>
+            <option value="OR">OR — Occasionally Recommended</option>
+            <option value="NR">NR — Not Recommended</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Calories (kcal) *</label>
+          <input type="number" name="calories" min="0" step="0.1" required>
+        </div>
+      </div>
+
+      <div class="form-section-title">Macros (per 100g)</div>
+      <div class="result-grid">
+        <div class="result-field">
+          <label>Protein (g)</label>
+          <input type="number" name="protein_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Fat (g)</label>
+          <input type="number" name="fat_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Net Carbs (g)</label>
+          <input type="number" name="net_carbs_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Fiber (g)</label>
+          <input type="number" name="fiber_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Glycemic Index (GI)</label>
+          <input type="number" name="glycemic_index" min="0" max="100" value="0">
+        </div>
+      </div>
+
+      <div class="form-section-title">Fat Breakdown (optional)</div>
+      <div class="result-grid">
+        <div class="result-field">
+          <label>MUFA (g)</label>
+          <input type="number" name="mufa_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>PUFA (g)</label>
+          <input type="number" name="pufa_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Omega-3 (g)</label>
+          <input type="number" name="omega3_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Omega-6 (g)</label>
+          <input type="number" name="omega6_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>SFA (g)</label>
+          <input type="number" name="sfa_g" min="0" step="0.01" value="0">
+        </div>
+        <div class="result-field">
+          <label>Trans Fat (g)</label>
+          <input type="number" name="trans_fat_g" min="0" step="0.01" value="0">
+        </div>
+      </div>
+
+      <div class="form-section-title">Portion Defaults</div>
+      <div class="input-pair">
+        <div class="fg">
+          <label>Default Unit</label>
+          <select name="default_portion_unit">
+            <option value="g">g</option>
+            <option value="ml">ml</option>
+            <option value="piece">piece</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Default Amount</label>
+          <input type="number" name="default_portion_amount" value="100" min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Weight per piece (g) — only for "piece" unit</label>
+        <input type="number" name="piece_weight_g" placeholder="e.g. 60" min="1">
+      </div>
+      <div class="form-group">
+        <label>Cooking Assumptions</label>
+        <textarea name="cooking_assumptions" placeholder="e.g. Made with 1 tsp oil per 100g, no cream…"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Add Food</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════════════ -->
+<!-- Supabase JS SDK v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+
+<!-- App scripts (order matters) -->
+<script src="js/config.js?v=2"></script>
+<script src="js/utils.js?v=5"></script>
+<script src="js/api.js?v=2"></script>
+<script src="js/auth.js?v=2"></script>
+<script src="js/tabs/targets.js?v=3"></script>
+<script src="js/tabs/food-db.js?v=18"></script>
+<script src="js/tabs/meal-log.js?v=6"></script>
+<script src="js/tabs/meal-plan.js?v=9"></script>
+<script src="js/tabs/nutrition.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
+
+<script>
+  // Expose quick-range helper used inline in index.html
+  TabNutrition._quickRange = function(days) {
+    const end = new Date();
+    const start = new Date(Date.now() - (days - 1) * 86400000);
+    document.getElementById('nutr-start').value = start.toISOString().split('T')[0];
+    document.getElementById('nutr-end').value = end.toISOString().split('T')[0];
+  };
+</script>
+
+</body>
+</html>
