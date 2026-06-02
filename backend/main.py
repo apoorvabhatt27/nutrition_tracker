@@ -44,4 +44,9 @@ app.include_router(targets.router, prefix="/api/targets", tags=["targets"])
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": "1.0.0"}
+    return {
+        "status": "ok",
+        "version": "1.0.0",
+        "supabase_url_set": bool(os.getenv("SUPABASE_URL")),
+        "supabase_key_set": bool(os.getenv("SUPABASE_SERVICE_ROLE_KEY") or os.getenv("SUPABASE_KEY")),
+    }
